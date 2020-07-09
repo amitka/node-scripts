@@ -11,7 +11,7 @@ const walkSync = (dir, filelist = [], filter) => {
       walkSync(dirFile, filelist, filter);
     } else if (filter.test(dirFile)) {
       filelist.push({
-        path: dirFile,
+        path: dirFile.substring(basePath.length - 1, dirFile.length),
         name: name.replace(/\.[^/.]+$/, ""),
         svg: fs.readFileSync(dirFile, "utf8"),
       });
@@ -24,10 +24,10 @@ const walkSync = (dir, filelist = [], filter) => {
 const allowed = /\.(svg)$/i;
 //const allowed = /\.()$/i;
 //const iconsFolder = "/Users/amitka/RESOURCES";
-const iconsFolder = "Icons";
-const tree = walkSync(iconsFolder, [], allowed);
+const basePath = "./Icons";
+const tree = walkSync(basePath, [], allowed);
 const json = JSON.stringify(tree);
-fs.writeFile("data.json", json, "utf8", function () {
-  console.log("file ready...");
+fs.writeFile("icons.json", json, "utf8", function () {
+  console.log("Icons file is ready...");
 });
-console.log("Reading files at " + iconsFolder);
+console.log("Reading files at " + basePath);
